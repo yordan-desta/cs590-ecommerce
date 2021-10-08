@@ -20,7 +20,7 @@ public class PaypalPaymentMethod implements PaymentMethod{
 
     @Override
     public String getPaymentUri() {
-       return URLEncoder.encode(serviceAddress, StandardCharsets.UTF_8);
+       return serviceAddress;
     }
 
     @Override
