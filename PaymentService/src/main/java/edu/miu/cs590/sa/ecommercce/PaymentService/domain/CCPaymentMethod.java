@@ -1,14 +1,19 @@
 package edu.miu.cs590.sa.ecommercce.PaymentService.domain;
 
-import org.springframework.beans.factory.annotation.Value;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class CCPaymentMethod implements PaymentMethod{
-    @Value("${payment.url.cc}")
-    private String serviceAddress;
+
+    private final String serviceAddress;
+
+    public CCPaymentMethod(String serviceAddress) {
+        this.serviceAddress = serviceAddress;
+    }
 
     @Override
     public String getPaymentUri() {
-        return serviceAddress;
+        return URLEncoder.encode(serviceAddress, StandardCharsets.UTF_8);
     }
 
     @Override

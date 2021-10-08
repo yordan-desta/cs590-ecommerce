@@ -29,10 +29,10 @@ public class OrderPayment {
 
     private String orderId;
 
+    private String transactionId;
+
     public OrderPayment(){
         if(uuid == null)
             this.uuid = UUID.randomUUID().toString();
     }
-
-
 }

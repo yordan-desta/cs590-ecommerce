@@ -8,6 +8,7 @@ import edu.miu.cs590.sa.ecommercce.PaymentService.domain.PaypalPaymentMethod;
 import edu.miu.cs590.sa.ecommercce.PaymentService.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,24 +20,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final String paypalAddress;
+    private final String ccAddress;
+
 
     @Autowired
-    public PaymentController(PaymentService paymentService) {
+    public PaymentController(PaymentService paymentService, @Value("${payment.url.paypal}") String paypalAddress, @Value("${payment.url.cc}") String ccAddress) {
         this.paymentService = paymentService;
+        this.paypalAddress = paypalAddress;
+        this.ccAddress = ccAddress;
     }
 
-    @PostMapping("/")
+    @PostMapping
     public PaymentStatus makePayment(@RequestBody PaymentRequest paymentRequest){
-        PaymentTypes paymentType = paymentRequest.getPaymentType();
 
-        log.info("making payment for " + paymentType.name());
+        log.info("making payment for " + paymentRequest);
 
-        if(PaymentTypes.PAYPAL.equals(paymentType)){
-            return paymentService.makePayment(new PaypalPaymentMethod(), paymentRequest.getOrderId());
+        if(PaymentTypes.PAYPAL.name().equals(paymentRequest.getPaymentType())){
+            return paymentService.makePayment(new PaypalPaymentMethod(paypalAddress), paymentRequest.getOrderId());
         }
 
-        if(PaymentTypes.CC.equals(paymentType)){
-            return paymentService.makePayment(new CCPaymentMethod(), paymentRequest.getOrderId());
+        if(PaymentTypes.CC.name().equals(paymentRequest.getPaymentType())){
+            return paymentService.makePayment(new CCPaymentMethod(ccAddress), paymentRequest.getOrderId());
         }
 
         return PaymentStatus.UNSUPPORTED;
