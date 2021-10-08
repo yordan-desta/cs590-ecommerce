@@ -1,8 +1,6 @@
 package edu.miu.cs590.sa.ecommercce.PaymentService.service;
 
-import edu.miu.cs590.sa.ecommercce.PaymentService.domain.OrderPayment;
-import edu.miu.cs590.sa.ecommercce.PaymentService.domain.PaymentMethod;
-import edu.miu.cs590.sa.ecommercce.PaymentService.domain.PaymentStatus;
+import edu.miu.cs590.sa.ecommercce.PaymentService.domain.*;
 import edu.miu.cs590.sa.ecommercce.PaymentService.repository.PaymentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +23,13 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public PaymentStatus makePayment(PaymentMethod paymentMethod, String orderId) {
+    public PaymentStatus makePayment(PaymentMethod paymentMethod, String orderId ) {
         log.info("sending request to: " + paymentMethod.getPaymentUri());
+
         ResponseEntity<String> result = restTemplate.postForEntity(
-                paymentMethod.getPaymentUri(), orderId, String.class
+                paymentMethod.getPaymentUri(), paymentMethod.getPayment(), String.class
         );
+
         if(result.getStatusCode() != HttpStatus.OK){
             //wrap into some responses message
             log.error("error has occurred!");
@@ -47,4 +47,5 @@ public class PaymentServiceImpl implements PaymentService{
 
         return PaymentStatus.SUCCESS;
     }
+
 }

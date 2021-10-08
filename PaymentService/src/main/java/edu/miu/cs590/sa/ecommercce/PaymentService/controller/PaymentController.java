@@ -1,10 +1,8 @@
 package edu.miu.cs590.sa.ecommercce.PaymentService.controller;
 
-import edu.miu.cs590.sa.ecommercce.PaymentService.controller.models.PaymentRequest;
-import edu.miu.cs590.sa.ecommercce.PaymentService.domain.CCPaymentMethod;
-import edu.miu.cs590.sa.ecommercce.PaymentService.domain.PaymentStatus;
-import edu.miu.cs590.sa.ecommercce.PaymentService.domain.PaymentTypes;
-import edu.miu.cs590.sa.ecommercce.PaymentService.domain.PaypalPaymentMethod;
+import edu.miu.cs590.sa.ecommercce.PaymentService.controller.models.CCPaymentRequest;
+import edu.miu.cs590.sa.ecommercce.PaymentService.controller.models.PaypalPaymentRequest;
+import edu.miu.cs590.sa.ecommercce.PaymentService.domain.*;
 import edu.miu.cs590.sa.ecommercce.PaymentService.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,19 +29,34 @@ public class PaymentController {
         this.ccAddress = ccAddress;
     }
 
-    @PostMapping
-    public PaymentStatus makePayment(@RequestBody PaymentRequest paymentRequest){
+    @PostMapping("/paypal")
+    public PaymentStatus processPaypal(@RequestBody PaypalPaymentRequest paymentRequest){
 
         log.info("making payment for " + paymentRequest);
 
-        if(PaymentTypes.PAYPAL.name().equals(paymentRequest.getPaymentType())){
-            return paymentService.makePayment(new PaypalPaymentMethod(paypalAddress), paymentRequest.getOrderId());
-        }
+        PaypalPayment payment = new PaypalPayment();
+        payment.setUserId(paymentRequest.getUserId());
+        payment.setPaypalId(paymentRequest.getPaypalId());
+        payment.setBalance(paymentRequest.getBalance());
 
-        if(PaymentTypes.CC.name().equals(paymentRequest.getPaymentType())){
-            return paymentService.makePayment(new CCPaymentMethod(ccAddress), paymentRequest.getOrderId());
-        }
+        PaypalPaymentMethod paymentMethod = new PaypalPaymentMethod(paypalAddress, payment);
 
-        return PaymentStatus.UNSUPPORTED;
+        return paymentService.makePayment(paymentMethod, paymentRequest.getOrderId());
+    }
+
+    @PostMapping("/cc")
+    public PaymentStatus processCC(@RequestBody CCPaymentRequest paymentRequest){
+
+        log.info("making payment for " + paymentRequest);
+
+        CCPayment payment = new CCPayment();
+        payment.setUserId(paymentRequest.getUserId());
+        payment.setCreditCardNumber(paymentRequest.getCreditCardNumber());
+        payment.setBalance(paymentRequest.getBalance());
+        CCPaymentMethod paymentMethod = new CCPaymentMethod(ccAddress, payment);
+
+
+        return paymentService.makePayment(paymentMethod, paymentRequest.getOrderId());
+
     }
 }
