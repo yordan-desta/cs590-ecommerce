@@ -11,5 +11,7 @@ public interface ProductService {
     ProductDTO get(Long id);
     List<ProductDTO> getAll();
     ProductDTO save(ProductDTO product);
+    ProductDTO add(Long productId, Long quantity);
+    ProductDTO deduct(Long productId, Long quantity);
 
 }
