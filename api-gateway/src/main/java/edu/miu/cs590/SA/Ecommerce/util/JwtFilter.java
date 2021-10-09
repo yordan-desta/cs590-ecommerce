@@ -4,7 +4,7 @@ import edu.miu.cs590.SA.Ecommerce.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.SignatureException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +21,14 @@ import java.io.IOException;
 @Service
 public class JwtFilter extends OncePerRequestFilter {
 
-    private JwtUtil jwtUtil;
-    private UserDetailsServiceImpl userDetailsService;
+    private final String secret;
+
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public JwtFilter(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService){
+    public JwtFilter(@Value("${jwt.secret}") String secret, UserDetailsServiceImpl userDetailsService){
         this.userDetailsService = userDetailsService;
-        this.jwtUtil = jwtUtil;
+        this.secret = secret;
     }
 
     @SneakyThrows
@@ -37,27 +38,25 @@ public class JwtFilter extends OncePerRequestFilter {
 
         final String authorizationHeader = request.getHeader("Authorization");
 
-        Long userId = null;
-        String jwt = null;
-
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
-            userId = Long.valueOf(jwtUtil.extractUserId(jwt));
+        if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")){
+            chain.doFilter(request, response);
+            return;
         }
 
-        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        final String token = authorizationHeader.substring(7);
 
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(String.valueOf(userId));
-            if (jwtUtil.validateToken(jwt)) {
+        if(JwtUtil.isTokenValid(token, secret) && JwtUtil.extractUsername(token, secret) != null){
+            final String userId = JwtUtil.extractUsername(token, secret);
 
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userId+":"+jwt, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userId);
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                    userId+":"+token, null, userDetails.getAuthorities());
+            usernamePasswordAuthenticationToken
+                    .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            }
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
+
         chain.doFilter(request, response);
     }
 

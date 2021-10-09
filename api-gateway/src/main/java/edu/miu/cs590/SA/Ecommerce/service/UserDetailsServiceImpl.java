@@ -14,8 +14,6 @@ import java.util.List;
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Value("${credential.username}")
-    private String myUsername;
     @Value("${credential.password}")
     private String password;
 
@@ -23,11 +21,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         User user = new User();
-        user.setUsername(myUsername);
+        user.setUsername(username);
         user.setPassword(password);
-        if (user == null) {
-            throw new UsernameNotFoundException("Could not find user");
-        }
         return new MyUserDetails(user);
     }
 

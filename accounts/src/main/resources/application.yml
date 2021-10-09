@@ -11,7 +11,7 @@ spring:
     datasource:
         url: jdbc:mysql://localhost:3306/accounts
         username: root
-        password: terbinosroot
+        password: P@ssw0rd2314
         driverClassName: com.mysql.jdbc.Driver
         hikari:
             maximumPoolSize: 10
@@ -27,4 +27,4 @@ server:
     port: 5000
 jwt:
     expiry: 6000000
-    secret: FKckg7aj1rt9scui5ik5tr93d0
+    secret: FKckg7aj1rt9scui5ik5tr93d0FKckg7aj1rt9scui5ik5tr93d0FKckg7aj1rt9scui5ik5tr93d0FKckg7aj1rt9scui5ik5tr93d0
