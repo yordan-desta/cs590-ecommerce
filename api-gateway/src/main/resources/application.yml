@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: API Gateway Service
+  api:
+    title: API Gateway Micro Service
+    version: 1.0.0
+    description: API Gateway Micro Service description
+    base-package: edu.miu.cs590.SA.Ecommerce
+    contact-name: Terbinos
+    contact-email: tchekol@miu.edu
+server:
+  port: 8000
+
+jwt:
+  expiry: 6000000
+  secret: FKckg7aj1rt9scui5ik5tr93d0
+
+credential.username: testUser
+credential.password: testPassword
+
+base_url: http://localhost:5000/
+account_prefix: accounts
+product_prefix: products
+order_prefix: orders
+login_prefix: /login
+register_prefix: /register
