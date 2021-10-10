@@ -9,9 +9,9 @@ spring:
         contact-name: Terbinos
         contact-email: tchekol@miu.edu
     datasource:
-        url: jdbc:mysql://localhost:3306/accounts
-        username: root
-        password: terbinosroot
+        url: ${URL}
+        username: ${USERNAME}
+        password: ${PASSWORD}
         driverClassName: com.mysql.jdbc.Driver
         hikari:
             maximumPoolSize: 10
@@ -24,7 +24,7 @@ spring:
             hibernate:
                 dialect: org.hibernate.dialect.MySQL5Dialect
 server:
-    port: 5000
+    port: ${SERVER_PORT}
 jwt:
-    expiry: 6000000
-    secret: FKckg7aj1rt9scui5ik5tr93d0
+    expiry: ${EXPIRY}
+    secret: ${SECRET}

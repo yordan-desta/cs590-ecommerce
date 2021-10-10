@@ -9,18 +9,18 @@ spring:
     contact-name: Terbinos
     contact-email: tchekol@miu.edu
 server:
-  port: 8000
+  port: ${SERVER_PORT}
 
 jwt:
-  expiry: 6000000
-  secret: FKckg7aj1rt9scui5ik5tr93d0
+  expiry: ${EXPIRY}
+  secret: ${SECRET}
 
-credential.username: testUser
-credential.password: testPassword
+credential.username: ${USERNAME}
+credential.password: ${PASSWORD}
 
-base_url: http://localhost:5000/
-account_prefix: accounts
-product_prefix: products
-order_prefix: orders
-login_prefix: /login
-register_prefix: /register
+base_url: ${BASE_URL}
+account_prefix: ${ACCOUNT_PREFIX}
+product_prefix: ${PRODUCT_PREFIX}
+order_prefix: ${ORDER_PREFIX}
+login_prefix: ${LOGIN_PREFIX}
+register_prefix: ${REGISTER_PREFIX}
