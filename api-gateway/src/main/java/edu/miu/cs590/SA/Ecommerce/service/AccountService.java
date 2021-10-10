@@ -11,13 +11,16 @@ import java.util.Optional;
 @Service
 public class AccountService {
 
-    @Value("${base_url}")
+    @Value("${account.service.url}")
     private String baseUrl;
-    @Value("${account_prefix}")
+
+    @Value("${account.service.api.account}")
     private String accountPrefix;
-    @Value("${login_prefix}")
+
+    @Value("${account.service.api.login}")
     private String loginPrefix;
-    @Value("${register_prefix}")
+
+    @Value("${account.service.api.register}")
     private String registerPrefix;
 
     RestTemplate restTemplate = new RestTemplate();
@@ -37,7 +40,8 @@ public class AccountService {
                     = restTemplate.exchange(baseUrl+accountPrefix , HttpMethod.GET,request,Object.class).getBody();
             return ResponseEntity.ok(response);
         }catch (Exception e){
-            throw e;
+            String[] errorMessage = e.getMessage().split("00 : ");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage[1]);
         }
     }
 
@@ -46,7 +50,7 @@ public class AccountService {
             HttpEntity<Object> request =
                     new HttpEntity<>(accountBody);
             Object response
-                    = restTemplate.postForObject(baseUrl + accountPrefix+registerPrefix, request,Object.class);
+                    = restTemplate.postForObject(baseUrl + accountPrefix + registerPrefix, request,Object.class);
             return ResponseEntity.ok(response);
         }catch (Exception e){
             String[] errorMessage = e.getMessage().split("00 : ");

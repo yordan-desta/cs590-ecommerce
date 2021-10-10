@@ -11,9 +11,9 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
-    @Value("${base_url}")
+    @Value("${order.service.url}")
     private String baseUrl;
-    @Value("${order_prefix}")
+    @Value("${order.service.api.order}")
     private String orderPrefix;
 
     RestTemplate restTemplate = new RestTemplate();

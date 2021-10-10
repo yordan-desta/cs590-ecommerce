@@ -11,9 +11,9 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-    @Value("${base_url}")
+    @Value("${product.service.url}")
     private String baseUrl;
-    @Value("${product_prefix}")
+    @Value("${product.service.api.product}")
     private String productPrefix;
 
     RestTemplate restTemplate = new RestTemplate();

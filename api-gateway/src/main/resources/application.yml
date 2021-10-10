@@ -18,9 +18,22 @@ jwt:
 credential.username: ${USERNAME}
 credential.password: ${PASSWORD}
 
-base_url: ${BASE_URL}
-account_prefix: ${ACCOUNT_PREFIX}
-product_prefix: ${PRODUCT_PREFIX}
-order_prefix: ${ORDER_PREFIX}
-login_prefix: ${LOGIN_PREFIX}
-register_prefix: ${REGISTER_PREFIX}
+account:
+  service:
+    url: ${ACCOUNT_SERVICE_URL}
+    api:
+      login: ${ACCOUNT_LOGIN_ENDPOINT}
+      account: ${ACCOUNT_ENDPOINT}
+      register: ${ACCOUNT_REGISTER_ENDPOINT}
+
+product:
+  service:
+    url: ${PRODUCT_SERVICE_URL}
+    api:
+      product: ${PRODUCT_ENDPOINT}
+
+order:
+  service:
+    url: ${ORDER_SERVICE_URL}
+    api:
+      order: ${ORDER_ENDPOINT}

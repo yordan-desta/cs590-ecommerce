@@ -9,9 +9,9 @@ spring:
         contact-name: Terbinos
         contact-email: tchekol@miu.edu
     datasource:
-        url: ${URL}
-        username: ${USERNAME}
-        password: ${PASSWORD}
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
         driverClassName: com.mysql.jdbc.Driver
         hikari:
             maximumPoolSize: 10
@@ -26,5 +26,5 @@ spring:
 server:
     port: ${SERVER_PORT}
 jwt:
-    expiry: ${EXPIRY}
-    secret: ${SECRET}
+    expiry: ${JWT_EXPIRY}
+    secret: ${JWT_SECRET}
