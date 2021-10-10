@@ -30,8 +30,10 @@ public class OrderController {
     }
 
     @PostMapping()
-    public ResponseEntity<OrderDTO> saveOrder(@RequestBody OrderDTO order) {
-        return new ResponseEntity<>(orderService.save(order), HttpStatus.OK);
+    public ResponseEntity<?> saveOrder(@RequestBody OrderDTO order) {
+        OrderDTO orderDTO = orderService.save(order);
+        if(orderDTO == null) return new ResponseEntity<>("Order create failed", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(orderDTO, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -41,6 +43,8 @@ public class OrderController {
 
     @PostMapping("/{id}/pay")
     public ResponseEntity<?> pay(@PathVariable Long id, @RequestBody PaymentInfo paymentInfo) {
-        return new ResponseEntity<Object>(orderService.pay(id, paymentInfo), HttpStatus.OK);
+        OrderDTO orderDTO = orderService.pay(id, paymentInfo);
+        if(orderDTO == null) return new ResponseEntity<>("Payment failed", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(orderDTO, HttpStatus.OK);
     }
 }

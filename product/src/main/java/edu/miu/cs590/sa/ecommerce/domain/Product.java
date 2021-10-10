@@ -28,22 +28,22 @@ public class Product {
     public String deduct(Long quantity) {
         if(this.quantity > quantity) {
             this.quantity -= quantity;
-            checkThreshold();
-            return "SUCCESS";
+            checkThreshold(ProductOperation.DEDUCT);
+            return ProductStatus.SUCCESS.name();
         }
-        return "FAILED";
+        return ProductStatus.ERROR.name();
     }
     public void add(Long quantity) {
             this.quantity += quantity;
-            checkThreshold();
+            checkThreshold(ProductOperation.ADD);
     }
 
-    private void checkThreshold() {
+    private void checkThreshold(ProductOperation operation) {
         if(this.quantity < thresholdQuantity) {
             //TODO publish below threshold message
             log.info("Product [" + this.id + "] is below a minimum threshold.");
         }
-        if(this.quantity >= thresholdQuantity) {
+        if(this.quantity >= thresholdQuantity && operation.equals(ProductOperation.ADD)) {
             //TODO publish restocked message
             log.info("Product [" + this.id + "] is restocked.");
         }

@@ -24,3 +24,5 @@ payment:
   url:
     cc: ${CC_PAYMENT_URL}
     paypal: ${PAYPAL_PAYMENT_URL}
+product:
+  url: ${PRODUCT_URL}

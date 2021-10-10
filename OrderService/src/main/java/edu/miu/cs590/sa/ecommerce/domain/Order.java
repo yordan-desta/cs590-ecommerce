@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Slf4j
 @Entity
@@ -29,7 +29,7 @@ public class Order {
     @JoinTable(name = "order_product",
         joinColumns={@JoinColumn(name = "order_id")},
         inverseJoinColumns = {@JoinColumn(name="product_id")})
-    private Set<Product> products;
+    private List<Product> products;
 
     @Embedded
     private ShippingAddress shippingAddress;

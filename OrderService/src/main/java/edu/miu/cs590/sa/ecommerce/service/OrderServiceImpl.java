@@ -2,6 +2,7 @@ package edu.miu.cs590.sa.ecommerce.service;
 
 import edu.miu.cs590.sa.ecommerce.domain.*;
 import edu.miu.cs590.sa.ecommerce.dto.OrderDTO;
+import edu.miu.cs590.sa.ecommerce.dto.ProductDTO;
 import edu.miu.cs590.sa.ecommerce.repository.OrderRepository;
 import edu.miu.cs590.sa.ecommerce.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +21,14 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository repository;
     private final RestTemplate restTemplate;
     private final PaymentService paymentService;
+    private final ProductService productService;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository repository, RestTemplate restTemplate, PaymentService paymentService) {
+    public OrderServiceImpl(OrderRepository repository, RestTemplate restTemplate, PaymentService paymentService, ProductService productService) {
         this.repository = repository;
         this.restTemplate = restTemplate;
         this.paymentService = paymentService;
+        this.productService = productService;
     }
 
     @Override
@@ -42,7 +45,14 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO save(OrderDTO orderDTO) {
         Order order = MapperUtil.map(orderDTO, Order.class);
         order.setStatus(OrderStatus.DRAFT);
-        //TODO validate quantity
+        for (Product p : order.getProducts()) {
+            ProductDTO product = restTemplate.getForObject(productService.getProductUri()+p.getProductId(), ProductDTO.class);
+            if(product.getQuantity() < p.getQuantity()) {
+                log.info("Product [" + p.getProductId() + "] stock is below the requested quantity.");
+                return null;
+            }
+        }
+        productService.saveAll(order.getProducts());
         return MapperUtil.map(repository.save(order), OrderDTO.class);
     }
 
@@ -63,8 +73,12 @@ public class OrderServiceImpl implements OrderService {
         request.setOrderId(id.toString());
         request.setPaypalId(paymentInfo.getPaypalId());
         request.setCreditCardNumber(paymentInfo.getCreditCardNumber());
-        //TODO calculate balance
-        request.setBalance(10.0);
+        Double totalPrice = 0.0;
+        for (Product p : order.getProducts()) {
+            ProductDTO product = restTemplate.getForObject(productService.getProductUri()+p.getProductId(), ProductDTO.class);
+            totalPrice += product.getPrice() * p.getQuantity();
+        }
+        request.setBalance(totalPrice);
 
         String paymentUri = order.getPaymentType().equals(PaymentType.PAYPAL) ?
                 paymentService.getPaypalPaymentUri(): paymentService.getCcPaymentUri();
@@ -75,7 +89,16 @@ public class OrderServiceImpl implements OrderService {
             log.error("Payment failed!");
             return null;
         }
-        //TODO update products quantity
+        for (Product p : order.getProducts()) {
+            HttpStatus response = restTemplate.postForEntity(productService.getProductUri() + p.getProductId() + "/deduct/" + p.getQuantity(),
+                    null, String.class).getStatusCode();
+
+            if(response.equals(HttpStatus.BAD_REQUEST)) {
+                log.info("Product [" + p.getProductId() + "] stock is below the requested quantity.");
+                return null;
+            }
+
+        }
         order.setStatus(OrderStatus.PLACED);
         repository.save(order);
         log.info("Order payment successfully completed");
