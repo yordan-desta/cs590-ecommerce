@@ -11,6 +11,7 @@ import edu.miu.cs590.SA.Ecommerce.util.JwtUtil;
 import org.json.simple.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,16 +25,19 @@ import java.util.*;
 public class AccountServiceImpl implements AccountService{
 
     private JwtUtil jwtUtil;
+    private String secret;
+    private String expiry;
     private ModelMapper modelMapper;
     private PaymentTypeRepository paymentTypeRepository;
     private AuthenticationManager authenticationManager;
     private AccountRepository accountRepository;
 
     @Autowired
-    public AccountServiceImpl(JwtUtil jwtUtil, ModelMapper modelMapper, PaymentTypeRepository paymentTypeRepository,
+    public AccountServiceImpl(@Value("${jwt.secret}") String secret, @Value("${jwt.expiry}") String expiry, ModelMapper modelMapper, PaymentTypeRepository paymentTypeRepository,
                               AuthenticationManager authenticationManager, AccountRepository accountRepository){
-        this.jwtUtil = jwtUtil;
         this.modelMapper = modelMapper;
+        this.secret = secret;
+        this.expiry = expiry;
         this.paymentTypeRepository = paymentTypeRepository;
         this.authenticationManager = authenticationManager;
         this.accountRepository = accountRepository;
@@ -107,7 +111,7 @@ public class AccountServiceImpl implements AccountService{
                 return ResponseEntity.badRequest().body(responseObject);
             }
             Optional<Account> account = accountRepository.getUserByUsername(credentialsBody.getUsername());
-            String token = jwtUtil.generateToken(String.valueOf(account.get().getId()));
+            String token = JwtUtil.generateToken(String.valueOf(account.get().getId()), secret, expiry);
             responseObject.put("success",true);
             responseObject.put("token","Bearer " +token);
             return ResponseEntity.status(HttpStatus.OK).body(responseObject);

@@ -1,44 +1,44 @@
 package edu.miu.cs590.SA.Ecommerce.util;
 
-import lombok.*;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Date;
 import java.util.function.Function;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Component
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
-
-
-    public String extractUserId(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public static String extractUserId(String token, String secret) {
+        return extractClaim(token, Claims::getSubject, secret);
     }
 
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+    public static Date extractExpiration(String token, String secret) {
+        return extractClaim(token, Claims::getExpiration, secret);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    public static <T> T extractClaim(String token, Function<Claims, T> claimsResolver, String secret) {
+        return claimsResolver.apply(extractAllClaims(token, secret));
     }
 
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+    private static Claims extractAllClaims(String token, String secret) {
+        return  Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
-    public Boolean validateToken(String token) {
-        return !isTokenExpired(token);
+    private static Boolean isTokenExpired(String token, String secret) {
+        return extractExpiration(token, secret).before(new Date());
+    }
+
+    private static Boolean isTokenTrustable(String token, String secret) {
+        try{
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            return true;
+        }catch (JwtException e){
+            return false;
+        }
+    }
+
+    public static Boolean isTokenValid(String token, String secret){
+        return isTokenTrustable(token, secret) && !isTokenExpired(token, secret);
     }
 }
