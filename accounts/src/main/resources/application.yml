@@ -9,7 +9,7 @@ spring:
         contact-name: Terbinos
         contact-email: tchekol@miu.edu
     datasource:
-        url: ${DB_URL}
+        url: ${DB_URL}/${DB_NAME}
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
         driverClassName: com.mysql.jdbc.Driver

@@ -30,8 +30,7 @@ public class ProductController {
     // Get a single product by id
     @GetMapping(RestEndpoints.BY_ID)
     public ResponseEntity<?> findById(@PathVariable Long id){
-        Optional<Object> product = productService.findById(id);
-        return ResponseEntity.ok(product);
+        return productService.findById(id);
     }
 
     // Update a product

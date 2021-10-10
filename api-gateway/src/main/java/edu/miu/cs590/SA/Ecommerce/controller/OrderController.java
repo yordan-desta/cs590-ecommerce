@@ -34,10 +34,16 @@ public class OrderController {
     }
 
     // Create an order
-    @PostMapping(RestEndpoints.BY_ID)
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody Object orderBody){
         Object product = orderService.create(orderBody);
         return ResponseEntity.ok(product);
+    }
+
+    @PostMapping(RestEndpoints.BY_ID+RestEndpoints.PAY_POSTFIX)
+    public ResponseEntity<?> pay(@PathVariable Long id, @RequestBody Object paymentBody){
+        Object paymentInfo = orderService.pay(id, paymentBody);
+        return ResponseEntity.ok(paymentInfo);
     }
 
     // Update an order
