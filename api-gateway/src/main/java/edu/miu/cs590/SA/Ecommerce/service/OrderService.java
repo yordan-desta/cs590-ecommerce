@@ -47,7 +47,19 @@ public class OrderService {
                 new HttpEntity<>(orderBody, headers);
 
         Object response
-                = restTemplate.postForObject(baseUrl + orderPrefix, request,Object.class);
+                = restTemplate.exchange(baseUrl + orderPrefix, HttpMethod.POST,request,Object.class).getBody();
+        return ResponseEntity.ok(response);
+    }
+
+    public Object pay(Long id, Object paymentBody) {
+        final String token = TokenExtractor.extractToken();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity<Object> request =
+                new HttpEntity<>(paymentBody, headers);
+
+        Object response
+                = restTemplate.exchange(baseUrl + orderPrefix+"/"+id+"/pay",HttpMethod.POST, request,Object.class).getBody();
         return ResponseEntity.ok(response);
     }
 

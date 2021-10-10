@@ -22,29 +22,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class Config extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private JwtFilter jwtFilter;
 
     @Autowired
-    @Qualifier("userDetailsService")
-    private UserDetailsService userDetailsService;
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        return authProvider;
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+    public Config(JwtFilter jwtFilter){
+        this.jwtFilter = jwtFilter;
     }
 
     @Override

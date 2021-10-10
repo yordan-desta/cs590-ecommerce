@@ -1,5 +1,6 @@
 package edu.miu.cs590.sa.ecommerce.service;
 
+import edu.miu.cs590.sa.ecommerce.domain.ProducerMessage;
 import edu.miu.cs590.sa.ecommerce.domain.Product;
 import edu.miu.cs590.sa.ecommerce.dto.ProductDTO;
 import edu.miu.cs590.sa.ecommerce.repository.ProductRepository;
@@ -15,6 +16,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository repository;
+
+    @Autowired
+    ProducerService producerService;
 
     @Override
     public List<ProductDTO> getAll() {
@@ -35,16 +39,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO add(Long productId, Long quantity) {
         Product product = repository.getById(productId);
-        product.add(quantity);
-        return MapperUtil.map(repository.save(product), ProductDTO.class);
+        ProducerMessage response = product.add(quantity);
+        ProductDTO productDTO = MapperUtil.map(repository.save(product), ProductDTO.class);
+        producerService.publishToTopic(response.name());
+        return productDTO;
     }
 
     @Override
     public ProductDTO deduct(Long productId, Long quantity) {
         Product product = repository.getById(productId);
-        String response = product.deduct(quantity);
-        if(Objects.equals(response, "FAILED")) return null;
-        return MapperUtil.map(repository.save(product), ProductDTO.class);
+        ProducerMessage response = product.deduct(quantity);
+        if(response.equals(ProducerMessage.ERROR)) return null;
+        ProductDTO productDTO = MapperUtil.map(repository.save(product), ProductDTO.class);
+        if(response == ProducerMessage.BELOW_THRESHOLD)
+            producerService.publishToTopic(response.name());
+        return productDTO;
     }
 
 }

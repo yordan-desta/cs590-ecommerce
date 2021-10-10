@@ -2,7 +2,7 @@ server:
   port: ${SERVER_PORT}
 spring:
   datasource:
-    url: ${DB_URL}
+    url: ${DB_URL}/${DB_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -25,6 +25,6 @@ jwt:
 
 payment:
   url:
-    cc: ${CC_PAYMENT_URL}
-    paypal: ${PAYPAL_PAYMENT_URL}
+    cc: ${CC_PAYMENT_URL}/${CC_ENDPOINT}
+    paypal: ${PAYPAL_PAYMENT_URL}/${PAYPAL_ENDPOINT}
 

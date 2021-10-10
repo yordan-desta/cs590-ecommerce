@@ -34,8 +34,20 @@ public class ProductService {
         }
     }
 
-    public Optional<Object> findById(Long id) {
-        return null;
+    public ResponseEntity<?> findById(Long id) {
+        final String token = TokenExtractor.extractToken();
+        try{
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(token);
+            HttpEntity<Object> request =
+                    new HttpEntity<>(null, headers);
+            Object response
+                    = restTemplate.exchange(baseUrl + productPrefix+"/"+id, HttpMethod.GET,request,Object.class).getBody();
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            String[] errorMessage = e.getMessage().split("00 : ");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage[1]);
+        }
     }
 
     public Object update(Long id, Object productBody) {
