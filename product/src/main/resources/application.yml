@@ -25,3 +25,6 @@ jwt:
   expiry: ${JWT_EXPIRE}
   secret: ${JWT_SECRET}
 
+kafka:
+  publish:
+    below_threshold_topic: ${TOPIC_NAME}
