@@ -3,7 +3,6 @@ package edu.miu.cs590.SA.Ecommerce.util;
 import lombok.*;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +14,6 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.expiry}")
-    private String expiry;
     @Value("${jwt.secret}")
     private String secret;
 
