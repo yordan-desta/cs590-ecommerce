@@ -19,6 +19,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
 
+credential.username: ${USERNAME}
+credential.password: ${PASSWORD}
 jwt:
   expiry: ${JWT_EXPIRE}
   secret: ${JWT_SECRET}

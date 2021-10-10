@@ -30,7 +30,9 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                 ).permitAll()
                 .antMatchers(
                         "/"+ RestEndpoints.ACCOUNT_PREFIX,
-                        "/"+ RestEndpoints.ACCOUNT_PREFIX+RestEndpoints.BY_ID
+                        "/"+ RestEndpoints.ACCOUNT_PREFIX+RestEndpoints.BY_ID,
+                        "/"+ RestEndpoints.PRODUCT_PREFIX,
+                        "/"+ RestEndpoints.PRODUCT_PREFIX+RestEndpoints.BY_ID
                 ).authenticated().and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().and()
