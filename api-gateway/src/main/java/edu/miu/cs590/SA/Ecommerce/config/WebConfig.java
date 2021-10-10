@@ -32,7 +32,10 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                         "/"+ RestEndpoints.ACCOUNT_PREFIX,
                         "/"+ RestEndpoints.ACCOUNT_PREFIX+RestEndpoints.BY_ID,
                         "/"+ RestEndpoints.PRODUCT_PREFIX,
-                        "/"+ RestEndpoints.PRODUCT_PREFIX+RestEndpoints.BY_ID
+                        "/"+ RestEndpoints.PRODUCT_PREFIX+RestEndpoints.BY_ID,
+                        "/"+ RestEndpoints.ORDER_PREFIX,
+                        "/"+ RestEndpoints.ORDER_PREFIX+RestEndpoints.BY_ID,
+                        "/"+ RestEndpoints.ORDER_PREFIX+RestEndpoints.BY_ID+RestEndpoints.PAY_POSTFIX
                 ).authenticated().and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().and()

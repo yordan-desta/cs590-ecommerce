@@ -12,7 +12,11 @@ public class RestEndpoints {
     // Order Endpoints
     public static final String ORDER_PREFIX = "orders";
 
+    // Order Endpoints
+
     // By Id Postfix
     public static final String BY_ID = "/{id}";
+
+    public static final String PAY_POSTFIX = "/pay";
 
 }

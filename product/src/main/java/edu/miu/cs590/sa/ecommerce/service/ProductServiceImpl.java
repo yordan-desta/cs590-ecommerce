@@ -51,7 +51,8 @@ public class ProductServiceImpl implements ProductService {
         ProducerMessage response = product.deduct(quantity);
         if(response.equals(ProducerMessage.ERROR)) return null;
         ProductDTO productDTO = MapperUtil.map(repository.save(product), ProductDTO.class);
-        producerService.publishToTopic(response.name());
+        if(response == ProducerMessage.BELOW_THRESHOLD)
+            producerService.publishToTopic(response.name());
         return productDTO;
     }
 
