@@ -25,27 +25,27 @@ public class Product {
     private Category category;
     private Long thresholdQuantity;
 
-    public String deduct(Long quantity) {
+    public ProducerMessage deduct(Long quantity) {
         if(this.quantity > quantity) {
             this.quantity -= quantity;
-            checkThreshold(ProductOperation.DEDUCT);
-            return ProductStatus.SUCCESS.name();
+            return checkThreshold(ProductOperation.DEDUCT);
         }
-        return ProductStatus.ERROR.name();
+        return ProducerMessage.ERROR;
     }
-    public void add(Long quantity) {
+    public ProducerMessage add(Long quantity) {
             this.quantity += quantity;
-            checkThreshold(ProductOperation.ADD);
+            return checkThreshold(ProductOperation.ADD);
     }
 
-    private void checkThreshold(ProductOperation operation) {
+    private ProducerMessage checkThreshold(ProductOperation operation) {
         if(this.quantity < thresholdQuantity) {
-            //TODO publish below threshold message
             log.info("Product [" + this.id + "] is below a minimum threshold.");
+            return ProducerMessage.BELOW_THRESHOLD;
         }
         if(this.quantity >= thresholdQuantity && operation.equals(ProductOperation.ADD)) {
-            //TODO publish restocked message
             log.info("Product [" + this.id + "] is restocked.");
+            return ProducerMessage.RESTOCKED;
         }
+        return ProducerMessage.NONE;
     }
 }
