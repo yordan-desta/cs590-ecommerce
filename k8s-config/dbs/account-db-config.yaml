@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-db-deployment
+  labels:
+    app: accountdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: accountdb
+  template:
+    metadata:
+      labels:
+        app: accountdb
+    spec:
+      containers:
+        - name: accountdb
+          image: mysql:latest
+          ports:
+          - containerPort: 3306
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: accountdb-secret
+                key: mysql-root-password
+          - name: MYSQL_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: accountdb-config
+                key: db_name
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-db-service
+spec:
+  selector:
+    app: accountdb
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: accountdb-secret
+type: Opaque
+stringData:
+  mysql-root-password: cm9vdA==
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: accountdb-config
+data:
+  db_name: account_service

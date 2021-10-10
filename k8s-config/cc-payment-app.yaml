@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cc-payment-app-deployment
+  labels:
+    app: cc-payment-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cc-payment-app
+  template:
+    metadata:
+      labels:
+        app: cc-payment-app
+    spec:
+      containers:
+        - name: cc-payment-app
+          image: pyordan/cc_payment_service:1.0
+          ports:
+          - containerPort: 8003
+          env:
+          - name: SERVER_PORT
+            value: 8003
+         
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cc-payment-app-service
+spec:
+  selector:
+    app: cc-payment-app
+  ports:
+    - protocol: TCP
+      port: 8003
+      targetPort: 8003

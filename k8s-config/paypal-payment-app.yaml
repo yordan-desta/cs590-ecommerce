@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paypal-payment-app-deployment
+  labels:
+    app: paypal-payment-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paypal-payment-app
+  template:
+    metadata:
+      labels:
+        app: paypal-payment-app
+    spec:
+      containers:
+        - name: paypal-payment-app
+          image: pyordan/paypal_payment_service:1.0
+          ports:
+          - containerPort: 8004
+          env:
+          - name: SERVER_PORT
+            value: 8004
+         
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paypal-payment-app-service
+spec:
+  selector:
+    app: paypal-payment-app
+  ports:
+    - protocol: TCP
+      port: 8004
+      targetPort: 8004
