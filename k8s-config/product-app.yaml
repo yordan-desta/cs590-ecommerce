@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: product-app
-          image: pyordan/product_service:1.0
+          image: pyordan/product_service:1.1
           ports:
           - containerPort: 8001
           env:
@@ -35,7 +35,7 @@ spec:
               secretKeyRef:
                 name: account-app-secret
                 key: jwt-secret
-          - name: JWT_EXPIRY
+          - name: JWT_EXPIRE
             valueFrom: 
               configMapKeyRef:
                 name: account-app-config
@@ -56,8 +56,21 @@ spec:
             valueFrom:            
               configMapKeyRef:
                 name: product-app-config
-                key: topic-name          
-
+                key: topic-name
+          - name: DB_PORT
+            value: "3306"          
+          - name: USERNAME
+            valueFrom: 
+              secretKeyRef:
+                name: product-app-secret
+                key: username
+          - name: PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: product-app-secret
+                key: password
+          - name: KAFKA_PRODUCER_SERVER
+            value: kafka-service                
 ---
 apiVersion: v1
 kind: Service
@@ -78,4 +91,13 @@ metadata:
 data:
   db_url: product-db-service
   topic-name: topic
-  mysql-root-username: root
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: product-app-secret
+type: Opaque
+stringData:
+  username: cm9vdA==
+  password: cm9vdA==
