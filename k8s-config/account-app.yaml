@@ -26,10 +26,7 @@ spec:
                 name: accountdb-secret
                 key: mysql-root-password
           - name: DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: accountdb-secret
-                key: mysql-root-username
+            value: "root"
           - name: JWT_SECRET
             valueFrom: 
               secretKeyRef:
