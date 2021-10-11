@@ -41,10 +41,7 @@ spec:
                 name: account-app-config
                 key: jwt_expire
           - name: DB_URL
-            valueFrom: 
-              configMapKeyRef:
-                name: account-app-config
-                key: db_url
+            value: "jdbc:mysql://$(account-db-service)"
           - name: SERVER_PORT
             value: "8000"
           - name: DB_NAME 
