@@ -7,6 +7,8 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: api-gateway-app
-          servicePort: 9000
+          service:
+            name: api-gateway-app
+            port:
+              number: 9000
 
