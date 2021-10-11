@@ -1,6 +1,7 @@
 package edu.miu.cs590.SA.Ecommerce.service;
 
 import edu.miu.cs590.SA.Ecommerce.util.TokenExtractor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AccountService {
 
     @Value("${account.service.url}")
@@ -40,8 +42,9 @@ public class AccountService {
                     = restTemplate.exchange(baseUrl+accountPrefix , HttpMethod.GET,request,Object.class).getBody();
             return ResponseEntity.ok(response);
         }catch (Exception e){
-            String[] errorMessage = e.getMessage().split("00 : ");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage[1]);
+            log.error(e.getLocalizedMessage());
+            //String[] errorMessage = e.getMessage().split("00 : ");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
     }
 
@@ -53,8 +56,9 @@ public class AccountService {
                     = restTemplate.postForObject(baseUrl + accountPrefix + registerPrefix, request,Object.class);
             return ResponseEntity.ok(response);
         }catch (Exception e){
-            String[] errorMessage = e.getMessage().split("00 : ");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage[1]);
+            log.error(e.getLocalizedMessage());
+            //String[] errorMessage = e.getMessage().split("00 : ");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
     }
 
@@ -71,8 +75,9 @@ public class AccountService {
 
             return ResponseEntity.ok(response);
         }catch (Exception e){
-            String[] errorMessage = e.getMessage().split("00 : ");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage[1]);
+            log.error(e.getLocalizedMessage());
+            //String[] errorMessage = e.getMessage().split("00 : ");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
 
     }
