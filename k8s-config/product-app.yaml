@@ -39,7 +39,7 @@ spec:
             valueFrom: 
               configMapKeyRef:
                 name: account-app-config
-                key: jwt-expire
+                key: jwt_expire
           - name: DB_URL
             valueFrom: 
               configMapKeyRef:
