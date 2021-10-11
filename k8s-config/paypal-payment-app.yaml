@@ -21,7 +21,7 @@ spec:
           - containerPort: 8004
           env:
           - name: SERVER_PORT
-            value: 8004
+            value: "8004"
          
 ---
 apiVersion: v1

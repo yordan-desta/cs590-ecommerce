@@ -46,7 +46,7 @@ spec:
                 name: account-app-config
                 key: db_url
           - name: SERVER_PORT
-            value: 8000
+            value: "8000"
           - name: DB_NAME 
             valueFrom: 
               configMapRef:

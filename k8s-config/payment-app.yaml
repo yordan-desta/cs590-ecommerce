@@ -36,7 +36,7 @@ spec:
                 name: payment-app-config
                 key: db_url
           - name: SERVER_PORT
-            value: 8002
+            value: "8002"
           - name: CC_PAYMENT_URL
             value: cc-payment-app-service
           - name: CC_ENDPOINT
