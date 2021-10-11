@@ -51,11 +51,11 @@ spec:
           - name: PRODUCT_URL
             value: product-app-service
           - name: CC_ENDPOINT
-            value: "api/payment/cc"
+            value: "/api/payment/cc"
           - name: PAYPAL_ENDPOINT
-            value: "api/payment/paypal"
+            value: "/api/payment/paypal"
           - name: PRODUCT_ENDPOINT
-            value: "api/products/"          
+            value: "/api/products/"          
 ---
 apiVersion: v1
 kind: Service
