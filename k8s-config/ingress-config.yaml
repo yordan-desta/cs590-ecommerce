@@ -1,16 +1,15 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: minimal-ingress
-spec:
-  rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
+apiVersion: networking.k8s.io/v1 
+kind: Ingress 
+metadata: 
+  name: minimal-ingress 
+spec: 
+  rules: 
+  - http: 
+      paths: 
+      - path: /* 
+        pathType: ImplementationSpecific
         backend:
           service:
-            name: api-gateway-app
+            name: api-gateway-app-service
             port:
               number: 9000
-
