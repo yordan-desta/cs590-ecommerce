@@ -26,10 +26,10 @@ spec:
                 name: paymentdb-secret
                 key: mysql-root-password
           - name: MYSQL_DATABASE
-            valueFrom: 
-              configMapRef:
+            valueFrom:
+              configMapKeyRef:
                 name: paymentdb-config
-                key: db_name  
+                key: db_name 
 ---
 apiVersion: v1
 kind: Service
