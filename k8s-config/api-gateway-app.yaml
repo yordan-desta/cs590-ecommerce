@@ -47,17 +47,17 @@ spec:
           - name: ACCOUNT_LOGIN_ENDPOINT
             value: "/login"           
           - name: ACCOUNT_ENDPOINT
-            value: "accounts"           
+            value: "/accounts"           
           - name: ACCOUNT_REGISTER_ENDPOINT
             value: "/register"     
           - name: PRODUCT_SERVICE_URL
             value: product-app-service
           - name: PRODUCT_ENDPOINT
-            value: "api/products"   
+            value: "/api/products"   
           - name: ORDER_SERVICE_URL
             value: order-app-service 
           - name: ORDER_ENDPOINT
-            value: "api/orders"    
+            value: "/api/orders"    
 
 ---
 apiVersion: v1
