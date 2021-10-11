@@ -51,7 +51,7 @@ metadata:
 type: Opaque
 stringData:
   mysql-root-password: cm9vdA==
-  mysql-root-username: root
+  mysql_root_username: cm9vdA==
 ---
 apiVersion: v1
 kind: ConfigMap

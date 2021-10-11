@@ -40,11 +40,11 @@ spec:
           - name: CC_PAYMENT_URL
             value: cc-payment-app-service
           - name: CC_ENDPOINT
-            value: api/cc    
+            value: "api/cc"
           - name: PAYPAL_PAYMENT_URL
             value: paypal-payment-app-service
           - name: PAYPAL_ENDPOINT
-            value: api/paypal     
+            value: "api/paypal"
           - name: DB_NAME 
             valueFrom: 
               configMapKeyRef:
