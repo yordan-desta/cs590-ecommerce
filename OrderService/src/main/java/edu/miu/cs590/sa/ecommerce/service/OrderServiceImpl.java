@@ -45,6 +45,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO save(OrderDTO orderDTO) {
         Order order = MapperUtil.map(orderDTO, Order.class);
         order.setStatus(OrderStatus.DRAFT);
+        log.info(productService.getProductUri());
         for (Product p : order.getProducts()) {
             ProductDTO product = restTemplate.getForObject(productService.getProductUri()+p.getProductId(), ProductDTO.class);
             if(product.getQuantity() < p.getQuantity()) {
@@ -74,6 +75,7 @@ public class OrderServiceImpl implements OrderService {
         request.setPaypalId(paymentInfo.getPaypalId());
         request.setCreditCardNumber(paymentInfo.getCreditCardNumber());
         Double totalPrice = 0.0;
+        log.info(productService.getProductUri());
         for (Product p : order.getProducts()) {
             ProductDTO product = restTemplate.getForObject(productService.getProductUri()+p.getProductId(), ProductDTO.class);
             totalPrice += product.getPrice() * p.getQuantity();
