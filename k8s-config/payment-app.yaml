@@ -29,7 +29,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: paymentdb-secret
-                key: mysql-root-username
+                key: mysql_root_username
           - name: DB_URL
             valueFrom: 
               configMapKeyRef:
