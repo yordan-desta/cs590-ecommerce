@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: account-app
-          image: pyordan/account_service:1.0
+          image: pyordan/account_service:1.1
           ports:
           - containerPort: 8000
           env:
@@ -41,7 +41,10 @@ spec:
                 name: account-app-config
                 key: jwt_expire
           - name: DB_URL
-            value: "jdbc:mysql://$(account-db-service)"
+            valueFrom: 
+              configMapKeyRef:
+                name: account-app-config
+                key: db_url
           - name: SERVER_PORT
             value: "8000"
           - name: DB_NAME 
@@ -49,7 +52,8 @@ spec:
               configMapKeyRef:
                 name: accountdb-config
                 key: db_name         
-                  
+          - name: DB_PORT
+            value: "3306"
           
 
 ---
