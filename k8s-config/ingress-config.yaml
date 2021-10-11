@@ -8,7 +8,7 @@ spec:
       paths:
       - path: /
         pathType: Prefix
-      - backend:
+        backend:
           service:
             name: api-gateway-app
             port:
