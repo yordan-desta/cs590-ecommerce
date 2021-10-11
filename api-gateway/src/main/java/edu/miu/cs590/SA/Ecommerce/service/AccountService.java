@@ -49,7 +49,7 @@ public class AccountService {
     }
 
     public ResponseEntity<?> save(Object accountBody) {
-        final String address = baseUrl + accountPrefix + registerPrefix;
+        final String address = "http://" + baseUrl + accountPrefix + registerPrefix;
 
         log.info("Sending account: " + accountBody);
         log.info("destination url: " + address);
