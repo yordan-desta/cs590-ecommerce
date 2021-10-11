@@ -32,7 +32,7 @@ spec:
                 key: mysql-root-username
           - name: DB_URL
             valueFrom: 
-              configMapRef:
+              configMapKeyRef:
                 name: payment-app-config
                 key: db_url
           - name: SERVER_PORT
@@ -47,7 +47,7 @@ spec:
             value: api/paypal     
           - name: DB_NAME 
             valueFrom: 
-              configMapRef:
+              configMapKeyRef:
                 name: paymentdb-config
                 key: db_name                 
 

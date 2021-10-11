@@ -37,19 +37,19 @@ spec:
                 key: jwt-secret
           - name: JWT_EXPIRY
             valueFrom: 
-              configMapRef:
+              configMapKeyRef:
                 name: account-app-config
                 key: jwt-expire
           - name: DB_URL
             valueFrom: 
-              configMapRef:
+              configMapKeyRef:
                 name: account-app-config
                 key: db_url
           - name: SERVER_PORT
             value: "8000"
           - name: DB_NAME 
             valueFrom: 
-              configMapRef:
+              configMapKeyRef:
                 name: accountdb-config
                 key: db_name         
                   
