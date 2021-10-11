@@ -71,3 +71,4 @@ metadata:
 data:
   db_url: payment-db-service
   topic-name: topic
+  mysql-root-username: root

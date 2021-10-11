@@ -78,3 +78,4 @@ metadata:
 data:
   db_url: product-db-service
   topic-name: topic
+  mysql-root-username: root

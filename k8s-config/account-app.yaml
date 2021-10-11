@@ -85,3 +85,4 @@ metadata:
 data:
   db_url: account-db-service
   jwt_expire: "3600"
+  mysql-root-username: root
