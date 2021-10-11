@@ -1,4 +1,4 @@
-FROM maven:ibmjava-alpine
+FROM maven:3.8.2-jdk-11-slim
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 RUN chmod +x ./wait_for_it.sh
