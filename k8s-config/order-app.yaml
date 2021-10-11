@@ -45,11 +45,11 @@ spec:
           - name: DB_PORT
             value: "3306"          
           - name: CC_PAYMENT_URL
-            value: cc-payment-app-service
+            value: http://cc-payment-app-service:8003
           - name: PAYPAL_PAYMENT_URL
-            value: paypal-payment-app-service
+            value: http://paypal-payment-app-service:8004
           - name: PRODUCT_URL
-            value: product-app-service
+            value: http://product-app-service:8001
           - name: CC_ENDPOINT
             value: "/api/payment/cc"
           - name: PAYPAL_ENDPOINT
