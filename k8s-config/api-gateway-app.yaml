@@ -43,7 +43,7 @@ spec:
                 name: api-gateway-app-secret
                 key: password
           - name: ACCOUNT_SERVICE_URL
-            value: account-app-service
+            value: account-app-service:8000
           - name: ACCOUNT_LOGIN_ENDPOINT
             value: "/login"           
           - name: ACCOUNT_ENDPOINT
