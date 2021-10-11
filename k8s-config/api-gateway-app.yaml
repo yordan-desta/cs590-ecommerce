@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-gateway-app
-          image: pyordan/api_gateway:1.1
+          image: pyordan/api_gateway:1.2
           ports:
           - containerPort: 9000
           env:
