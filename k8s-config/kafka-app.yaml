@@ -18,7 +18,7 @@ spec:
       - name: kafka
         image: wurstmeister/kafka
         ports:
-      - containerPort: 9092
+        - containerPort: 9092
         env:
         - name: KAFKA_ADVERTISED_PORT
           value: "30718"
