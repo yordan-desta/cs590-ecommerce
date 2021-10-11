@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-app-deployment
+  labels:
+    app: order-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-app
+  template:
+    metadata:
+      labels:
+        app: order-app
+    spec:
+      containers:
+        - name: order-app
+          image: pyordan/order_service:1.1
+          ports:
+          - containerPort: 8001
+          env:
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: orderdb-secret
+                key: mysql-root-password
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: orderdb-secret
+                key: mysql-root-username
+          - name: DB_URL
+            valueFrom: 
+              configMapKeyRef:
+                name: order-app-config
+                key: db_url
+          - name: SERVER_PORT
+            value: "8001"
+          - name: DB_NAME 
+            valueFrom: 
+              configMapKeyRef:
+                name: orderdb-config
+                key: db_name         
+          - name: DB_PORT
+            value: "3306"          
+          - name: CC_PAYMENT_URL
+            value: cc-payment-app-service
+          - name: PAYPAL_PAYMENT_URL
+            value: paypal-payment-app-service
+          - name: PRODUCT_URL
+            value: product-app-service
+          - name: CC_ENDPOINT
+            value: "api/payment/cc"
+          - name: PAYPAL_ENDPOINT
+            value: "api/payment/paypal"
+          - name: PRODUCT_ENDPOINT
+            value: "api/products/"          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-app-service
+spec:
+  selector:
+    app: order-app
+  ports:
+    - protocol: TCP
+      port: 8001
+      targetPort: 8001
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-app-config
+data:
+  db_url: order-db-service
+  topic-name: topic
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: order-app-secret
+type: Opaque
+stringData:
+  username: cm9vdA==
+  password: cm9vdA==
