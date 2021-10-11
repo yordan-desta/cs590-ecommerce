@@ -51,11 +51,11 @@ spec:
           - name: ACCOUNT_REGISTER_ENDPOINT
             value: "/register"     
           - name: PRODUCT_SERVICE_URL
-            value: product-app-service
+            value: http://product-app-service:8001
           - name: PRODUCT_ENDPOINT
             value: "/api/products"   
           - name: ORDER_SERVICE_URL
-            value: order-app-service 
+            value: http://order-app-service:8001
           - name: ORDER_ENDPOINT
             value: "/api/orders"    
 

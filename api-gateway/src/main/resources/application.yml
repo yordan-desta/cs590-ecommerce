@@ -20,7 +20,7 @@ credential.password: ${PASSWORD}
 
 account:
   service:
-    url: ${ACCOUNT_SERVICE_URL}
+    url: http://${ACCOUNT_SERVICE_URL}
     api:
       login: ${ACCOUNT_LOGIN_ENDPOINT}
       account: ${ACCOUNT_ENDPOINT}
@@ -28,12 +28,12 @@ account:
 
 product:
   service:
-    url: ${PRODUCT_SERVICE_URL}
+    url: http://${PRODUCT_SERVICE_URL}
     api:
       product: ${PRODUCT_ENDPOINT}
 
 order:
   service:
-    url: ${ORDER_SERVICE_URL}
+    url: http://${ORDER_SERVICE_URL}
     api:
       order: ${ORDER_ENDPOINT}
