@@ -49,11 +49,17 @@ public class AccountService {
     }
 
     public ResponseEntity<?> save(Object accountBody) {
+        final String address = baseUrl + accountPrefix + registerPrefix;
+
+        log.info("Sending account: " + accountBody);
+        log.info("destination url: " + address);
+
+
         try{
             HttpEntity<Object> request =
                     new HttpEntity<>(accountBody);
             Object response
-                    = restTemplate.postForObject(baseUrl + accountPrefix + registerPrefix, request,Object.class);
+                    = restTemplate.postForObject(address, request,Object.class);
             return ResponseEntity.ok(response);
         }catch (Exception e){
             log.error(e.getLocalizedMessage());
