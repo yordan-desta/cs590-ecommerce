@@ -26,7 +26,10 @@ spec:
                 name: orderdb-secret
                 key: mysql-root-password
           - name: MYSQL_DATABASE
-            value: order_service 
+            valueFrom:
+              configMapKeyRef:
+                name: orderdb-config
+                key: db_name
 
 ---
 apiVersion: v1
@@ -50,3 +53,10 @@ type: Opaque
 stringData:
   mysql-root-password: cm9vdA==
   mysql-root-username: root
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orderdb-config
+data:
+  db_name: order_service
