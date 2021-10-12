@@ -70,7 +70,7 @@ spec:
                 name: product-app-secret
                 key: password
           - name: KAFKA_PRODUCER_SERVER
-            value: kafka-service                
+            value: http://kafka-service:9092                
 ---
 apiVersion: v1
 kind: Service

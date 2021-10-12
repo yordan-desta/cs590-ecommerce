@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-app-deployment
+  labels:
+    app: stock-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stock-app
+  template:
+    metadata:
+      labels:
+        app: stock-app
+    spec:
+      containers:
+        - name: stock-app
+          image: pyordan/stock_service:1.0
+          ports:
+          - containerPort: 8000
+          env:
+          - name: SERVER_PORT
+            value: "8000"
+          - name: TOPIC_NAME
+            valueFrom:            
+              configMapKeyRef:
+                name: product-app-config
+                key: topic-name
+          - name: KAFKA_CONSUMER_SERVER
+            value: http://kafka-service:9092
+          - name: KAFKA_GROUP_ID
+            value: stockGroup
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-app-service
+spec:
+  selector:
+    app: stock-app
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
