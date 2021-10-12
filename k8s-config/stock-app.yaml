@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: stock-app
-          image: pyordan/stock_service:1.0
+          image: pyordan/stock_service:1.1
           ports:
           - containerPort: 8000
           env:
