@@ -22,7 +22,7 @@ spring:
 
 payment:
   url:
-    cc: ${CC_PAYMENT_URL}/${CC_ENDPOINT}
-    paypal: ${PAYPAL_PAYMENT_URL}/${PAYPAL_ENDPOINT}
+    cc: ${CC_PAYMENT_URL}
+    paypal: ${PAYPAL_PAYMENT_URL}
 product:
-  url: ${PRODUCT_URL}/${PRODUCT_ENDPOINT}
+  url: ${PRODUCT_URL}
