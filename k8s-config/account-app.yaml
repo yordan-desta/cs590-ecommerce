@@ -5,7 +5,7 @@ metadata:
   labels:
     app: account-app
 spec:
-  replicas: 2
+  replicas: 2 
   selector:
     matchLabels:
       app: account-app
@@ -84,4 +84,4 @@ metadata:
   name: account-app-config
 data:
   db_url: account-db-service
-  jwt_expire: "36000000"
+  jwt_expire: "3600000"
