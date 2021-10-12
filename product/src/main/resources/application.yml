@@ -29,6 +29,8 @@ jwt:
   expiry: ${JWT_EXPIRE}
   secret: ${JWT_SECRET}
 
+stock_url: ${STOCK_URL}
+
 kafka:
   publish:
     below_threshold_topic: ${TOPIC_NAME}

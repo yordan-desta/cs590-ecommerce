@@ -5,13 +5,18 @@ import edu.miu.cs590.sa.ecommerce.domain.Product;
 import edu.miu.cs590.sa.ecommerce.dto.ProductDTO;
 import edu.miu.cs590.sa.ecommerce.repository.ProductRepository;
 import edu.miu.cs590.sa.ecommerce.util.MapperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -19,6 +24,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProducerService producerService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${stock_url}")
+    private String stockUrl;
 
     @Override
     public List<ProductDTO> getAll() {
@@ -41,7 +52,6 @@ public class ProductServiceImpl implements ProductService {
         Product product = repository.getById(productId);
         ProducerMessage response = product.add(quantity);
         ProductDTO productDTO = MapperUtil.map(repository.save(product), ProductDTO.class);
-        producerService.publishToTopic(response.name());
         return productDTO;
     }
 
@@ -51,8 +61,10 @@ public class ProductServiceImpl implements ProductService {
         ProducerMessage response = product.deduct(quantity);
         if(response.equals(ProducerMessage.ERROR)) return null;
         ProductDTO productDTO = MapperUtil.map(repository.save(product), ProductDTO.class);
-        if(response == ProducerMessage.BELOW_THRESHOLD)
-            producerService.publishToTopic(response.name());
+        if(response == ProducerMessage.BELOW_THRESHOLD){
+            log.info("sending message [" + "Deduct stock from: " + product.getName() + "] to " + stockUrl);
+            restTemplate.postForEntity(stockUrl, "Deduct stock from: " + product.getName(), Objects.class);
+        }
         return productDTO;
     }
 
