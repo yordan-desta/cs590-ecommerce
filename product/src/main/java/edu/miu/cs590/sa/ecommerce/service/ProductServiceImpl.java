@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
         ProductDTO productDTO = MapperUtil.map(repository.save(product), ProductDTO.class);
         if(response == ProducerMessage.BELOW_THRESHOLD){
             log.info("sending message [" + "Deduct stock from: " + product.getName() + "] to " + stockUrl);
-            restTemplate.postForEntity(stockUrl, "Deduct stock from: " + product.getName(), Objects.class);
+            restTemplate.postForEntity(stockUrl, "Deduct stock from: " + product.getName(), String.class);
         }
         return productDTO;
     }
