@@ -23,9 +23,6 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository repository;
 
     @Autowired
-    ProducerService producerService;
-
-    @Autowired
     private RestTemplate restTemplate;
 
     @Value("${stock_url}")
